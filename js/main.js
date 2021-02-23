@@ -2,7 +2,7 @@
 function compartilhar() {
     var tel = document.querySelector("#telefone").value
     var nomeFantasia = document.querySelector("#fantasia").value
-    var conteudo = nomeFantasia + " Telefone: "+ tel
+    var conteudo = " Empresa: \n"+nomeFantasia + " Telefone: \n"+ tel
     console.log(conteudo)
     var linkWhats = "https://api.whatsapp.com/send?text=" + conteudo;
 
