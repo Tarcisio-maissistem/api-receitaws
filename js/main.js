@@ -1,29 +1,42 @@
-$(document).ready(function(){
+
+function compartilhar() {
+    var tel = document.querySelector("#telefone").value
+    var nomeFantasia = document.querySelector("#fantasia").value
+    var conteudo = nomeFantasia + " Telefone: "+ tel
+    console.log(conteudo)
+    var linkWhats = "https://api.whatsapp.com/send?text=" + conteudo;
+
+    window.open(linkWhats, '_blank');
+}
+
+
+
+$(document).ready(function () {
     console.log("MAIN JS carregado...");
 
     // captura o valor ao digitar no input
-    $("#cnpj").on("keyup", function(){
+    $("#cnpj").on("keyup", function () {
         // remove os caracteres (mascara)
-        var cnpj = $(this).val().replace(/[^\d]+/g,'');
+        var cnpj = $(this).val().replace(/[^\d]+/g, '');
 
         // verifica o tamanho do valor informado
-        if(cnpj.length == 14){
-            getReceita(cnpj, function(data){
-                if(data.status == "ERROR"){
+        if (cnpj.length == 14) {
+            getReceita(cnpj, function (data) {
+                if (data.status == "ERROR") {
                     $("#feedback_cnpj").html(data.message);
                     $("#cnpj").addClass("is-invalid");
-                }else{
+                } else {
                     $("#feedback_cnpj").html("");
                     $("#cnpj").removeClass("is-invalid").addClass("is-valid");
-                    
+
                     /**
                      * preenche o formulário com os dados de retorno
-                     *  */ 
+                     *  */
 
                     // identificação
                     $("#nome").val(data.nome);
                     $("#fantasia").val(data.fantasia);
-                    
+
                     // contato
                     $("#telefone").val(data.telefone);
                     $("#email").val(data.email);
@@ -45,39 +58,40 @@ $(document).ready(function(){
                     $("#divAtividades").html("");
 
                     // atividade secundarias
-                    if(data.atividades_secundarias.length > 0){
-                        $.each(data.atividades_secundarias, function(i, s){
-                            var divAtividades = $("#divAtividades");                            
+                    if (data.atividades_secundarias.length > 0) {
+                        $.each(data.atividades_secundarias, function (i, s) {
+                            var divAtividades = $("#divAtividades");
 
                             var a = '<div class="col-md-3">';
-                            a += '<label for="cnae-sec['+ i +']">CNAE</label>';
-                            a += '<input type="text" class="form-control" id="cnae-sec['+ i +']" name="cnae-sec['+ i +']" value="'+ s.code +'">'
+                            a += '<label for="cnae-sec[' + i + ']">CNAE</label>';
+                            a += '<input type="text" class="form-control" id="cnae-sec[' + i + ']" name="cnae-sec[' + i + ']" value="' + s.code + '">'
                             a += '</div>';
                             a += '<div class="col-md-9">';
-                            a += '<label for="atividades-secundarias['+ i +']">Atividade</label>';
-                            a += '<input type="text" class="form-control" id="atividades-secundarias['+ i +']" name="atividades-secundarias['+ i +']" value="'+ s.text +'">';
+                            a += '<label for="atividades-secundarias[' + i + ']">Atividade</label>';
+                            a += '<input type="text" class="form-control" id="atividades-secundarias[' + i + ']" name="atividades-secundarias[' + i + ']" value="' + s.text + '">';
                             a += '</div>';
 
                             divAtividades.append(a);
-                        }); 
+                        });
                     }
 
                     console.log(data);
                 }
-            });            
-        }else{
+            });
+        } else {
             console.log("CNPJ incorreto");
         }
     });
 });
 
+
 // função para consumir a API receitaWS
-function getReceita(cnpj, callback){
+function getReceita(cnpj, callback) {
     $.ajax({
-        url: "https://www.receitaws.com.br/v1/cnpj/"+ cnpj,
-        method:'GET',
+        url: "https://www.receitaws.com.br/v1/cnpj/" + cnpj,
+        method: 'GET',
         dataType: 'jsonp',
-    }).done(function(data) {
+    }).done(function (data) {
         callback(data);
     });
 }
