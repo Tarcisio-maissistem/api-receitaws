@@ -1,18 +1,4 @@
-
-function compartilhar() {
-    var tel = document.querySelector("#telefone").value
-    var nomeFantasia = document.querySelector("#fantasia").value
-    var conteudo = " Empresa: \n"+nomeFantasia + " Telefone: \n"+ tel
-    console.log(conteudo)
-    var linkWhats = "https://api.whatsapp.com/send?text=" + conteudo;
-
-    window.open(linkWhats, '_blank');
-}
-
-
-
 $(document).ready(function () {
-    console.log("MAIN JS carregado...");
 
     // captura o valor ao digitar no input
     $("#cnpj").on("keyup", function () {
@@ -95,3 +81,16 @@ function getReceita(cnpj, callback) {
         callback(data);
     });
 }
+
+// Botão Compartilhar WhatsApp
+
+function compartilhar() {
+    var tel = document.querySelector("#telefone").value
+    var nomeFantasia = document.querySelector("#fantasia").value
+    var conteudo = " Empresa: \n"+nomeFantasia + " Telefone: \n"+ tel
+    console.log(conteudo)
+    var linkWhats = "https://api.whatsapp.com/send?text=" + conteudo;
+
+    window.open(linkWhats, '_blank');
+}
+
